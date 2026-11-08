@@ -20,8 +20,13 @@ def grpo_train_step(
     the retained sequence fraction. All-zero batches skip the optimizer step,
     including momentum and weight decay, and return zero entropy by convention.
     """
-    if importance_reweighting_method != "none":
-        raise NotImplementedError("Only on-policy updates are implemented")
+    if importance_reweighting_method not in ("none", "noclip", "grpo", "gspo"):
+        raise ValueError(f"Unknown importance reweighting: {importance_reweighting_method}")
+    off_policy = importance_reweighting_method != "none"
+    if off_policy and old_log_probs is None:
+        raise ValueError("Off-policy updates require old_log_probs")
+    if importance_reweighting_method in ("grpo", "gspo") and (cliprange is None or cliprange < 0):
+        raise ValueError("Clipped updates require a nonnegative cliprange")
     if loss_normalization not in ("sequence", "constant"):
         raise ValueError(f"Unknown loss normalization: {loss_normalization}")
     if loss_normalization == "constant" and (
@@ -31,6 +36,8 @@ def grpo_train_step(
     batch_size = len(repeated_prompts)
     if len(rollout_responses) != batch_size:
         raise ValueError("Prompts and responses must have the same length")
+    if off_policy and (old_log_probs.ndim != 2 or old_log_probs.shape[0] != batch_size):
+        raise ValueError("old_log_probs must have shape (original batch size, sequence length)")
     if not 1 <= gradient_accumulation_steps <= batch_size:
         raise ValueError("Accumulation steps must be between one and batch size")
     rewards, metadata = compute_rollout_rewards(reward_fn, rollout_responses, repeated_ground_truths)
@@ -41,23 +48,41 @@ def grpo_train_step(
     device = next(model.parameters()).device
     total_loss = torch.zeros((), device=device)
     entropy_sum = torch.zeros((), device=device)
+    clipped_token_count = torch.zeros((), device=device)
     token_count = 0
     optimizer.zero_grad(set_to_none=True)
     active_indices = advantages.nonzero(as_tuple=True)[0]
     metadata["active_fraction"] = len(active_indices) / batch_size
     if not len(active_indices):
         metadata.update(grad_norm=total_loss.clone(), token_entropy=total_loss.clone())
+        if off_policy:
+            metadata["clip_fraction"] = total_loss.clone()
         return total_loss, metadata
     batch = tokenize_prompt_and_output(
         [repeated_prompts[i] for i in active_indices.tolist()],
         [rollout_responses[i] for i in active_indices.tolist()], tokenizer,
     )
     advantages = advantages[active_indices].to(device)
+    if off_policy:
+        active_length = batch["input_ids"].shape[1]
+        if old_log_probs.shape[1] < active_length:
+            raise ValueError("old_log_probs does not cover the active token sequence length")
+        # Right padding may shrink after pruning. Preserve original row identity
+        # and the shifted-label alignment when selecting the cached rollout scores.
+        old_log_probs = old_log_probs.detach()[
+            active_indices.to(old_log_probs.device), :active_length
+        ]
     microbatch_size = (batch_size + gradient_accumulation_steps - 1) // gradient_accumulation_steps
     for indices in torch.arange(len(active_indices)).split(microbatch_size):
         micro = {key: value[indices].to(device) for key, value in batch.items()}
         scores = get_response_log_probs(model, micro["input_ids"], micro["labels"], True)
-        per_token, _ = compute_policy_gradient_loss(advantages[indices], scores["log_probs"])
+        old_micro = (
+            old_log_probs[indices.to(old_log_probs.device)].to(device) if off_policy else None
+        )
+        per_token, loss_stats = compute_policy_gradient_loss(
+            advantages[indices], scores["log_probs"], importance_reweighting_method,
+            old_micro, cliprange, micro["response_mask"],
+        )
         loss = aggregate_loss_across_microbatch(
             per_token, micro["response_mask"], loss_normalization, normalization_constant
         )
@@ -66,11 +91,16 @@ def grpo_train_step(
         loss.backward()
         total_loss += loss.detach()
         entropy_sum += (scores["token_entropy"].detach() * micro["response_mask"]).sum()
-        token_count += int(micro["response_mask"].sum())
+        micro_token_count = int(micro["response_mask"].sum())
+        token_count += micro_token_count
+        if off_policy:
+            clipped_token_count += loss_stats["clip_fraction"].detach() * micro_token_count
     grad_norm = torch.nn.utils.clip_grad_norm_(
         model.parameters(), max_grad_norm if max_grad_norm is not None else float("inf")
     )
     optimizer.step()
     optimizer.zero_grad(set_to_none=True)
     metadata.update(grad_norm=grad_norm.detach(), token_entropy=entropy_sum / max(token_count, 1))
+    if off_policy:
+        metadata["clip_fraction"] = clipped_token_count / max(token_count, 1)
     return total_loss, metadata
