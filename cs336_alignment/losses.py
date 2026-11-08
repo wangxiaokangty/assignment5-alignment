@@ -13,15 +13,32 @@ def compute_policy_gradient_loss(
     cliprange: float | None = None,
     response_mask: torch.Tensor | None = None,
 ) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
-    """Return unreduced negative reward-weighted log probabilities.
+    """Return unreduced on-policy or importance-weighted policy losses.
 
     Rewards/advantages are fixed rollout targets, with one value per sequence.
     Response masking and sequence/batch reduction belong to the caller.
     """
-    if importance_reweighting_method != "none":
-        raise NotImplementedError(importance_reweighting_method)
     advantages = raw_rewards_or_advantages.detach().reshape(-1, 1)
-    return -advantages * policy_log_probs, {}
+    if importance_reweighting_method == "none":
+        return -advantages * policy_log_probs, {}
+    if importance_reweighting_method not in {"noclip", "grpo"}:
+        raise NotImplementedError(importance_reweighting_method)
+    if old_log_probs is None:
+        raise ValueError("importance reweighting requires old_log_probs")
+    ratios = (policy_log_probs - old_log_probs.detach()).exp()
+    objective = ratios * advantages
+    if importance_reweighting_method == "noclip":
+        return -objective, {"clip_fraction": policy_log_probs.new_zeros(())}
+    if cliprange is None or cliprange < 0:
+        raise ValueError("GRPO requires a nonnegative cliprange")
+    clipped_objective = ratios.clamp(1 - cliprange, 1 + cliprange) * advantages
+    # Report where the clipped branch actually restricts the objective.
+    clipped = (clipped_objective < objective).detach().float()
+    if response_mask is None:
+        clip_fraction = clipped.mean()
+    else:
+        clip_fraction = (clipped * response_mask).sum() / response_mask.sum().clamp_min(1)
+    return -torch.minimum(objective, clipped_objective), {"clip_fraction": clip_fraction}
 
 
 def aggregate_loss_across_microbatch(
