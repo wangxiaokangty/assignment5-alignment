@@ -36,9 +36,11 @@ def compute_group_normalized_rewards(
     advantage_eps: float = 1e-6,
     advantage_normalizer: Literal["std", "none", "mean"] = "std",
 ) -> tuple[torch.Tensor, dict[str, float]]:
-    """Subtract group means and divide by sample standard deviation plus epsilon."""
-    if baseline != "mean" or advantage_normalizer != "std":
-        raise NotImplementedError("This GRPO variant requires mean baseline and std normalization")
+    """Apply a group baseline and optional sample-standard-deviation scaling."""
+    if baseline not in ("mean", "none"):
+        raise ValueError(f"Unknown baseline: {baseline}")
+    if advantage_normalizer not in ("std", "none"):
+        raise NotImplementedError(f"Unsupported advantage normalizer: {advantage_normalizer}")
     if raw_rewards.ndim != 1 or raw_rewards.numel() == 0:
         raise ValueError("Rewards must be a nonempty one-dimensional tensor")
     if group_size < 1 or raw_rewards.numel() % group_size:
@@ -48,9 +50,11 @@ def compute_group_normalized_rewards(
 
     grouped = raw_rewards.reshape(-1, group_size)
     means = grouped.mean(dim=1, keepdim=True)
-    # A singleton group has no reward variation and therefore zero advantage.
+    # A singleton group has zero variation (and zero mean-centered advantage).
     stds = grouped.std(dim=1, keepdim=True, correction=1 if group_size > 1 else 0)
-    advantages = (grouped - means) / (stds + advantage_eps)
+    advantages = grouped - means if baseline == "mean" else grouped
+    if advantage_normalizer == "std":
+        advantages = advantages / (stds + advantage_eps)
     metadata = {
         "mean_reward": raw_rewards.mean().item(),
         "mean_group_std": stds.mean().item(),
