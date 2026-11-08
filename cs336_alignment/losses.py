@@ -21,16 +21,22 @@ def compute_policy_gradient_loss(
     advantages = raw_rewards_or_advantages.detach().reshape(-1, 1)
     if importance_reweighting_method == "none":
         return -advantages * policy_log_probs, {}
-    if importance_reweighting_method not in {"noclip", "grpo"}:
+    if importance_reweighting_method not in {"noclip", "grpo", "gspo"}:
         raise NotImplementedError(importance_reweighting_method)
     if old_log_probs is None:
         raise ValueError("importance reweighting requires old_log_probs")
-    ratios = (policy_log_probs - old_log_probs.detach()).exp()
+    log_ratios = policy_log_probs - old_log_probs.detach()
+    if importance_reweighting_method == "gspo":
+        if response_mask is None:
+            raise ValueError("GSPO requires response_mask")
+        lengths = response_mask.sum(dim=-1, keepdim=True).clamp_min(1)
+        log_ratios = (log_ratios * response_mask).sum(dim=-1, keepdim=True) / lengths
+    ratios = log_ratios.exp().expand_as(policy_log_probs)
     objective = ratios * advantages
     if importance_reweighting_method == "noclip":
         return -objective, {"clip_fraction": policy_log_probs.new_zeros(())}
     if cliprange is None or cliprange < 0:
-        raise ValueError("GRPO requires a nonnegative cliprange")
+        raise ValueError("clipped importance reweighting requires a nonnegative cliprange")
     clipped_objective = ratios.clamp(1 - cliprange, 1 + cliprange) * advantages
     # Report where the clipped branch actually restricts the objective.
     clipped = (clipped_objective < objective).detach().float()
