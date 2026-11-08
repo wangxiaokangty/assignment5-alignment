@@ -36,11 +36,11 @@ def compute_group_normalized_rewards(
     advantage_eps: float = 1e-6,
     advantage_normalizer: Literal["std", "none", "mean"] = "std",
 ) -> tuple[torch.Tensor, dict[str, float]]:
-    """Apply a group baseline and optional sample-standard-deviation scaling."""
+    """Apply a group baseline and optional standard-deviation or mean scaling."""
     if baseline not in ("mean", "none"):
         raise ValueError(f"Unknown baseline: {baseline}")
-    if advantage_normalizer not in ("std", "none"):
-        raise NotImplementedError(f"Unsupported advantage normalizer: {advantage_normalizer}")
+    if advantage_normalizer not in ("std", "none", "mean"):
+        raise ValueError(f"Unknown advantage normalizer: {advantage_normalizer}")
     if raw_rewards.ndim != 1 or raw_rewards.numel() == 0:
         raise ValueError("Rewards must be a nonempty one-dimensional tensor")
     if group_size < 1 or raw_rewards.numel() % group_size:
@@ -55,6 +55,8 @@ def compute_group_normalized_rewards(
     advantages = grouped - means if baseline == "mean" else grouped
     if advantage_normalizer == "std":
         advantages = advantages / (stds + advantage_eps)
+    elif advantage_normalizer == "mean":
+        advantages = advantages / (means + advantage_eps)
     metadata = {
         "mean_reward": raw_rewards.mean().item(),
         "mean_group_std": stds.mean().item(),
