@@ -1,6 +1,7 @@
 """Reward evaluation for policy rollouts."""
 
 from collections.abc import Callable
+from typing import Literal
 
 import torch
 
@@ -26,3 +27,32 @@ def compute_rollout_rewards(
         for component in ("reward", "format_reward", "answer_reward")
     }
     return raw_rewards, metadata
+
+
+def compute_group_normalized_rewards(
+    raw_rewards: torch.Tensor,
+    group_size: int,
+    baseline: Literal["mean", "none"] = "mean",
+    advantage_eps: float = 1e-6,
+    advantage_normalizer: Literal["std", "none", "mean"] = "std",
+) -> tuple[torch.Tensor, dict[str, float]]:
+    """Subtract group means and divide by sample standard deviation plus epsilon."""
+    if baseline != "mean" or advantage_normalizer != "std":
+        raise NotImplementedError("This GRPO variant requires mean baseline and std normalization")
+    if raw_rewards.ndim != 1 or raw_rewards.numel() == 0:
+        raise ValueError("Rewards must be a nonempty one-dimensional tensor")
+    if group_size < 1 or raw_rewards.numel() % group_size:
+        raise ValueError("group_size must be positive and divide the rollout batch size")
+    if advantage_eps <= 0:
+        raise ValueError("advantage_eps must be positive")
+
+    grouped = raw_rewards.reshape(-1, group_size)
+    means = grouped.mean(dim=1, keepdim=True)
+    # A singleton group has no reward variation and therefore zero advantage.
+    stds = grouped.std(dim=1, keepdim=True, correction=1 if group_size > 1 else 0)
+    advantages = (grouped - means) / (stds + advantage_eps)
+    metadata = {
+        "mean_reward": raw_rewards.mean().item(),
+        "mean_group_std": stds.mean().item(),
+    }
+    return advantages.reshape_as(raw_rewards), metadata
