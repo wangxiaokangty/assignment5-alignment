@@ -8,6 +8,7 @@ import logging
 import os
 import signal
 import subprocess
+import sys
 import time
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
@@ -128,13 +129,18 @@ def start_server(
     env["VLLM_SERVER_DEV_MODE"] = "1"
     env["VLLM_LOGGING_LEVEL"] = logging_level
     command = [
-        "vllm",
+        sys.executable,
+        "-m",
+        "vllm.entrypoints.cli.main",
         "serve",
         model_id,
         "--host",
         host,
         "--port",
         str(port),
+        "--max-model-len",
+        "2048",
+        "--enforce-eager",
         "--dtype",
         "bfloat16",
         "--enable-prefix-caching",

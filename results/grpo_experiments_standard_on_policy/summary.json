@@ -1,0 +1,66 @@
+{
+  "problem": "grpo_experiments_standard_on_policy",
+  "complete": true,
+  "summary": [
+    {
+      "group": "standard",
+      "n_complete": 4,
+      "expected_seeds": 4,
+      "mean": 0.45263671875,
+      "std": 0.024865615787067332,
+      "variance": 0.0006182988484700521,
+      "min": 0.4228515625,
+      "max": 0.482421875,
+      "mean_initial_to_final_change": 0.4521484375,
+      "n_at_least_25_percent": 4,
+      "mean_zero_update_fraction": 0.058750000000000004,
+      "status_counts": {
+        "complete": 4
+      },
+      "missing": 0
+    }
+  ],
+  "commentary": "已确认完成 4/4 个计划种子。最终奖励只纳入有完成标记且达到配置终点的验证记录。 观测均值最高的配置为 ['standard']，均值 0.4526。 观测样本标准差最低的配置为 ['standard']，标准差 0.0249。 四个种子仍是小样本；范围和标准差是描述统计，不能证明差异显著。 配置 standard：最终均值 0.4526，样本标准差 0.0249，达到 25% 的已完成种子为 4/4。 初始到最终的平均变化 +0.4521。 存在全零 advantage 更新：这些批次跳过模型计算，记录的零 entropy 是缺失观测约定，不能解读为确定性策略。 失败不等于数值发散；仅明确发散标记或非有限训练数值记作 diverged。反复用验证集调参也会引入选择偏差。",
+  "runtime": [
+    {
+      "method": "standard",
+      "seed": 0,
+      "final_reward": 0.458984375,
+      "total_hours": 1.2127205310900333,
+      "rollout_seconds": 7.03787099000765,
+      "update_seconds": 8.860580299149733,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 173
+    },
+    {
+      "method": "standard",
+      "seed": 1,
+      "final_reward": 0.482421875,
+      "total_hours": 1.3035189431714307,
+      "rollout_seconds": 7.250974074176047,
+      "update_seconds": 10.218970669256523,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 200
+    },
+    {
+      "method": "standard",
+      "seed": 2,
+      "final_reward": 0.4228515625,
+      "total_hours": 1.278855213096831,
+      "rollout_seconds": 6.992097609946504,
+      "update_seconds": 10.140756941665895,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 194
+    },
+    {
+      "method": "standard",
+      "seed": 3,
+      "final_reward": 0.4462890625,
+      "total_hours": 1.1786730070709666,
+      "rollout_seconds": 6.663084916623775,
+      "update_seconds": 8.936801528229843,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 186
+    }
+  ]
+}

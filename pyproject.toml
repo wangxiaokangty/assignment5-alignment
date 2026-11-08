@@ -15,6 +15,7 @@ dependencies = [
     "typer>=0.15.4",
     "xopen>=2.0.2",
     "marimo>=0.25.2",
+    "matplotlib>=3.11.2",
 ]
 
 [project.optional-dependencies]
