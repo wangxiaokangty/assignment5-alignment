@@ -30,3 +30,24 @@ def tokenize_prompt_and_output(
         "labels": tokens[:, 1:],
         "response_mask": response_mask[:, 1:],
     }
+
+
+def get_response_log_probs(
+    model: torch.nn.Module,
+    input_ids: torch.Tensor,
+    labels: torch.Tensor,
+    return_token_entropy: bool = False,
+) -> dict[str, torch.Tensor]:
+    """Score already-shifted labels, preserving gradients and the model's mode.
+
+    Returns scores for every position; callers apply the response mask. Compute
+    log-softmax in float32 for half-precision models to stabilize reductions.
+    """
+    logits = model(input_ids).logits
+    if logits.dtype in (torch.float16, torch.bfloat16):
+        logits = logits.float()
+    log_probs = logits.log_softmax(dim=-1)
+    result = {"log_probs": log_probs.gather(-1, labels.unsqueeze(-1)).squeeze(-1)}
+    if return_token_entropy:
+        result["token_entropy"] = -(log_probs.exp() * log_probs).sum(dim=-1)
+    return result
