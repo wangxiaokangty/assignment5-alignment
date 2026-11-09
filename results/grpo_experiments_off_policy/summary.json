@@ -1,0 +1,294 @@
+{
+  "problem": "grpo_experiments_off_policy",
+  "complete": true,
+  "summary": [
+    {
+      "group": "GRPO_clip",
+      "n_complete": 4,
+      "expected_seeds": 4,
+      "mean": 0.158447265625,
+      "std": 0.1555391034251363,
+      "variance": 0.024192412694295246,
+      "min": 0.0,
+      "max": 0.3310546875,
+      "mean_initial_to_final_change": 0.157958984375,
+      "n_at_least_25_percent": 1,
+      "mean_zero_update_fraction": 0.18875,
+      "status_counts": {
+        "complete": 4
+      },
+      "missing": 0
+    },
+    {
+      "group": "GSPO",
+      "n_complete": 4,
+      "expected_seeds": 4,
+      "mean": 0.493408203125,
+      "std": 0.027763415968416992,
+      "variance": 0.0007708072662353517,
+      "min": 0.4599609375,
+      "max": 0.5263671875,
+      "mean_initial_to_final_change": 0.492919921875,
+      "n_at_least_25_percent": 4,
+      "mean_zero_update_fraction": 0.0525,
+      "status_counts": {
+        "complete": 4
+      },
+      "missing": 0
+    },
+    {
+      "group": "naive",
+      "n_complete": 4,
+      "expected_seeds": 4,
+      "mean": 0.380126953125,
+      "std": 0.25289307946746475,
+      "variance": 0.06395490964253744,
+      "min": 0.0009765625,
+      "max": 0.5166015625,
+      "mean_initial_to_final_change": 0.379638671875,
+      "n_at_least_25_percent": 3,
+      "mean_zero_update_fraction": 0.06625,
+      "status_counts": {
+        "complete": 4
+      },
+      "missing": 0
+    },
+    {
+      "group": "noclip",
+      "n_complete": 4,
+      "expected_seeds": 4,
+      "mean": 0.240478515625,
+      "std": 0.24925167619606464,
+      "variance": 0.06212639808654786,
+      "min": 0.0,
+      "max": 0.4599609375,
+      "mean_initial_to_final_change": 0.239990234375,
+      "n_at_least_25_percent": 2,
+      "mean_zero_update_fraction": 0.08125,
+      "status_counts": {
+        "complete": 4
+      },
+      "missing": 0
+    },
+    {
+      "group": "standard",
+      "n_complete": 4,
+      "expected_seeds": 4,
+      "mean": 0.45263671875,
+      "std": 0.024865615787067332,
+      "variance": 0.0006182988484700521,
+      "min": 0.4228515625,
+      "max": 0.482421875,
+      "mean_initial_to_final_change": 0.4521484375,
+      "n_at_least_25_percent": 4,
+      "mean_zero_update_fraction": 0.058750000000000004,
+      "status_counts": {
+        "complete": 4
+      },
+      "missing": 0
+    }
+  ],
+  "commentary": "已确认完成 20/20 个计划种子。最终奖励只纳入有完成标记且达到配置终点的验证记录。 观测均值最高的配置为 ['GSPO']，均值 0.4934。 观测样本标准差最低的配置为 ['standard']，标准差 0.0249。 四个种子仍是小样本；范围和标准差是描述统计，不能证明差异显著。 配置 GRPO_clip：最终均值 0.1584，样本标准差 0.1555，达到 25% 的已完成种子为 1/4。 初始到最终的平均变化 +0.1580。 配置 GSPO：最终均值 0.4934，样本标准差 0.0278，达到 25% 的已完成种子为 4/4。 初始到最终的平均变化 +0.4929。 配置 naive：最终均值 0.3801，样本标准差 0.2529，达到 25% 的已完成种子为 3/4。 初始到最终的平均变化 +0.3796。 配置 noclip：最终均值 0.2405，样本标准差 0.2493，达到 25% 的已完成种子为 2/4。 初始到最终的平均变化 +0.2400。 配置 standard：最终均值 0.4526，样本标准差 0.0249，达到 25% 的已完成种子为 4/4。 初始到最终的平均变化 +0.4521。 存在全零 advantage 更新：这些批次跳过模型计算，记录的零 entropy 是缺失观测约定，不能解读为确定性策略。 失败不等于数值发散；仅明确发散标记或非有限训练数值记作 diverged。反复用验证集调参也会引入选择偏差。",
+  "runtime": [
+    {
+      "method": "standard",
+      "seed": 0,
+      "final_reward": 0.458984375,
+      "total_hours": 1.2127205310900333,
+      "rollout_seconds": 7.03787099000765,
+      "update_seconds": 8.860580299149733,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 173
+    },
+    {
+      "method": "standard",
+      "seed": 1,
+      "final_reward": 0.482421875,
+      "total_hours": 1.3035189431714307,
+      "rollout_seconds": 7.250974074176047,
+      "update_seconds": 10.218970669256523,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 200
+    },
+    {
+      "method": "standard",
+      "seed": 2,
+      "final_reward": 0.4228515625,
+      "total_hours": 1.278855213096831,
+      "rollout_seconds": 6.992097609946504,
+      "update_seconds": 10.140756941665895,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 194
+    },
+    {
+      "method": "standard",
+      "seed": 3,
+      "final_reward": 0.4462890625,
+      "total_hours": 1.1786730070709666,
+      "rollout_seconds": 6.663084916623775,
+      "update_seconds": 8.936801528229843,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 186
+    },
+    {
+      "method": "naive",
+      "seed": 0,
+      "final_reward": 0.505859375,
+      "total_hours": 1.297301319287055,
+      "rollout_seconds": 6.974705585576594,
+      "update_seconds": 10.53127048305003,
+      "optimizer_calls": 6400,
+      "active_optimizer_calls": 3256
+    },
+    {
+      "method": "naive",
+      "seed": 1,
+      "final_reward": 0.5166015625,
+      "total_hours": 1.3497729447705205,
+      "rollout_seconds": 7.1092414409318,
+      "update_seconds": 11.380081045411062,
+      "optimizer_calls": 6400,
+      "active_optimizer_calls": 3594
+    },
+    {
+      "method": "naive",
+      "seed": 2,
+      "final_reward": 0.0009765625,
+      "total_hours": 1.22334257217939,
+      "rollout_seconds": 6.6152551740431225,
+      "update_seconds": 10.01665210809093,
+      "optimizer_calls": 6400,
+      "active_optimizer_calls": 2923
+    },
+    {
+      "method": "naive",
+      "seed": 3,
+      "final_reward": 0.4970703125,
+      "total_hours": 1.3662880811969647,
+      "rollout_seconds": 7.3610530827729965,
+      "update_seconds": 11.360240362044424,
+      "optimizer_calls": 6400,
+      "active_optimizer_calls": 3448
+    },
+    {
+      "method": "noclip",
+      "seed": 0,
+      "final_reward": 0.0,
+      "total_hours": 1.4633406391183639,
+      "rollout_seconds": 7.127768758777529,
+      "update_seconds": 13.371641340628265,
+      "optimizer_calls": 6400,
+      "active_optimizer_calls": 2594
+    },
+    {
+      "method": "noclip",
+      "seed": 1,
+      "final_reward": 0.451171875,
+      "total_hours": 1.2620880515639308,
+      "rollout_seconds": 6.743449151371606,
+      "update_seconds": 10.447998071573675,
+      "optimizer_calls": 6400,
+      "active_optimizer_calls": 3374
+    },
+    {
+      "method": "noclip",
+      "seed": 2,
+      "final_reward": 0.05078125,
+      "total_hours": 1.4372295889572706,
+      "rollout_seconds": 7.05293192351237,
+      "update_seconds": 13.159611669855657,
+      "optimizer_calls": 6400,
+      "active_optimizer_calls": 3443
+    },
+    {
+      "method": "noclip",
+      "seed": 3,
+      "final_reward": 0.4599609375,
+      "total_hours": 1.3082602787483484,
+      "rollout_seconds": 6.966260386502836,
+      "update_seconds": 10.888743568053469,
+      "optimizer_calls": 6400,
+      "active_optimizer_calls": 3370
+    },
+    {
+      "method": "GRPO_clip",
+      "seed": 0,
+      "final_reward": 0.0576171875,
+      "total_hours": 1.2164769760463645,
+      "rollout_seconds": 7.1949046410433946,
+      "update_seconds": 8.932993986278307,
+      "optimizer_calls": 6400,
+      "active_optimizer_calls": 1370
+    },
+    {
+      "method": "GRPO_clip",
+      "seed": 1,
+      "final_reward": 0.0,
+      "total_hours": 1.2022088484632938,
+      "rollout_seconds": 6.711258937267121,
+      "update_seconds": 9.330198552366346,
+      "optimizer_calls": 6400,
+      "active_optimizer_calls": 1455
+    },
+    {
+      "method": "GRPO_clip",
+      "seed": 2,
+      "final_reward": 0.3310546875,
+      "total_hours": 1.4695165875252698,
+      "rollout_seconds": 7.1499671953148205,
+      "update_seconds": 13.57228611939121,
+      "optimizer_calls": 6400,
+      "active_optimizer_calls": 2811
+    },
+    {
+      "method": "GRPO_clip",
+      "seed": 3,
+      "final_reward": 0.2451171875,
+      "total_hours": 1.5387914207868745,
+      "rollout_seconds": 6.796313302218914,
+      "update_seconds": 15.199144762326032,
+      "optimizer_calls": 6400,
+      "active_optimizer_calls": 3205
+    },
+    {
+      "method": "GSPO",
+      "seed": 0,
+      "final_reward": 0.5009765625,
+      "total_hours": 1.384937817823892,
+      "rollout_seconds": 7.363659298166167,
+      "update_seconds": 11.652530951793306,
+      "optimizer_calls": 6400,
+      "active_optimizer_calls": 3569
+    },
+    {
+      "method": "GSPO",
+      "seed": 1,
+      "final_reward": 0.4599609375,
+      "total_hours": 1.3508518731755774,
+      "rollout_seconds": 6.9427676546620205,
+      "update_seconds": 11.728819535863586,
+      "optimizer_calls": 6400,
+      "active_optimizer_calls": 3813
+    },
+    {
+      "method": "GSPO",
+      "seed": 2,
+      "final_reward": 0.5263671875,
+      "total_hours": 1.3989591652263578,
+      "rollout_seconds": 6.994827054454945,
+      "update_seconds": 12.381143172010779,
+      "optimizer_calls": 6400,
+      "active_optimizer_calls": 3690
+    },
+    {
+      "method": "GSPO",
+      "seed": 3,
+      "final_reward": 0.486328125,
+      "total_hours": 1.378737324688894,
+      "rollout_seconds": 7.2501500979694535,
+      "update_seconds": 11.716809645046014,
+      "optimizer_calls": 6400,
+      "active_optimizer_calls": 3570
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "config": {
+    "model": "models/OLMo-2-0425-1B",
+    "train_data": "data/gsm8k/train.jsonl",
+    "val_data": "data/gsm8k/test.jsonl",
+    "output": "results/grpo_offpolicy_noclip",
+    "prompt": "r1_zero",
+    "seed": 3,
+    "steps": 200,
+    "n_train": 6400,
+    "n_val": 1024,
+    "learning_rate": 1e-05,
+    "rollout_batch_size": 256,
+    "group_size": 8,
+    "gradient_accumulation_steps": 32,
+    "max_tokens": 512,
+    "temperature": 1.0,
+    "max_grad_norm": 1.0,
+    "eval_every": 10,
+    "log_rollouts_every": 40,
+    "policy_device": "cuda:6",
+    "inference_gpu": 7,
+    "port": 8006,
+    "save_checkpoint": true,
+    "resume": false,
+    "variant": "offpolicy_noclip",
+    "train_batch_size": 8
+  },
+  "torch": "2.10.0+cu129",
+  "train_sha256": "17f347dc51477c50d4efb83959dbb7c56297aba886e5544ee2aaed3024813465",
+  "val_sha256": "3730d312f6e3440559ace48831e51066acaca737f6eabec99bccb9e4b3c39d14",
+  "prompt_sha256": "56213732da87e12ace60a2b88a16df0af18280fb0563a957cbecc938a6a2ac0e"
+}
