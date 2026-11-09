@@ -1,0 +1,154 @@
+{
+  "problem": "try_your_own",
+  "complete": true,
+  "summary": [
+    {
+      "group": "Dr. GRPO",
+      "n_complete": 4,
+      "expected_seeds": 4,
+      "mean": 0.4501953125,
+      "std": 0.018682740693075187,
+      "variance": 0.00034904479980468755,
+      "min": 0.435546875,
+      "max": 0.4775390625,
+      "mean_initial_to_final_change": 0.449462890625,
+      "n_at_least_25_percent": 4,
+      "mean_zero_update_fraction": 0.045,
+      "status_counts": {
+        "complete": 4
+      },
+      "missing": 0
+    },
+    {
+      "group": "LOO",
+      "n_complete": 4,
+      "expected_seeds": 4,
+      "mean": 0.465087890625,
+      "std": 0.02215993682503446,
+      "variance": 0.0004910628000895183,
+      "min": 0.451171875,
+      "max": 0.498046875,
+      "mean_initial_to_final_change": 0.46484375,
+      "n_at_least_25_percent": 4,
+      "mean_zero_update_fraction": 0.06,
+      "status_counts": {
+        "complete": 4
+      },
+      "missing": 0
+    }
+  ],
+  "commentary": "已确认完成 8/8 个计划种子。最终奖励只纳入有完成标记且达到配置终点的验证记录。 观测均值最高的配置为 ['LOO']，均值 0.4651。 观测样本标准差最低的配置为 ['Dr. GRPO']，标准差 0.0187。 四个种子仍是小样本；范围和标准差是描述统计，不能证明差异显著。 配置 Dr. GRPO：最终均值 0.4502，样本标准差 0.0187，达到 25% 的已完成种子为 4/4。 初始到最终的平均变化 +0.4495。 配置 LOO：最终均值 0.4651，样本标准差 0.0222，达到 25% 的已完成种子为 4/4。 初始到最终的平均变化 +0.4648。 存在全零 advantage 更新：这些批次跳过模型计算，记录的零 entropy 是缺失观测约定，不能解读为确定性策略。 失败不等于数值发散；仅明确发散标记或非有限训练数值记作 diverged。反复用验证集调参也会引入选择偏差。",
+  "runtime": [
+    {
+      "method": "Dr. GRPO",
+      "seed": 0,
+      "final_reward": 0.4775390625,
+      "total_hours": 1.1701072116704503,
+      "rollout_seconds": 6.816826783793513,
+      "update_seconds": 8.64082280536415,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 179
+    },
+    {
+      "method": "Dr. GRPO",
+      "seed": 1,
+      "final_reward": 0.435546875,
+      "total_hours": 1.102359911296646,
+      "rollout_seconds": 6.368013798375614,
+      "update_seconds": 8.175542331140022,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 195
+    },
+    {
+      "method": "Dr. GRPO",
+      "seed": 2,
+      "final_reward": 0.4423828125,
+      "total_hours": 1.1870296384611478,
+      "rollout_seconds": 6.803856287761591,
+      "update_seconds": 8.942127813294064,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 196
+    },
+    {
+      "method": "Dr. GRPO",
+      "seed": 3,
+      "final_reward": 0.4453125,
+      "total_hours": 1.097282336987167,
+      "rollout_seconds": 6.296506836761255,
+      "update_seconds": 8.28857659313595,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 194
+    },
+    {
+      "method": "LOO",
+      "seed": 0,
+      "final_reward": 0.498046875,
+      "total_hours": 1.1732251700822316,
+      "rollout_seconds": 6.953797620134428,
+      "update_seconds": 8.437435868254397,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 174
+    },
+    {
+      "method": "LOO",
+      "seed": 1,
+      "final_reward": 0.4580078125,
+      "total_hours": 1.060843311661932,
+      "rollout_seconds": 6.321494335201569,
+      "update_seconds": 7.71236003626138,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 192
+    },
+    {
+      "method": "LOO",
+      "seed": 2,
+      "final_reward": 0.451171875,
+      "total_hours": 1.1079414771313572,
+      "rollout_seconds": 6.3756340721203015,
+      "update_seconds": 8.318545728626196,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 192
+    },
+    {
+      "method": "LOO",
+      "seed": 3,
+      "final_reward": 0.453125,
+      "total_hours": 1.190886037891679,
+      "rollout_seconds": 6.897060355017893,
+      "update_seconds": 8.950549616517964,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 194
+    }
+  ],
+  "paired_rows": [
+    {
+      "seed": 0,
+      "baseline": 0.4775390625,
+      "candidate": 0.498046875,
+      "difference": 0.0205078125
+    },
+    {
+      "seed": 1,
+      "baseline": 0.435546875,
+      "candidate": 0.4580078125,
+      "difference": 0.0224609375
+    },
+    {
+      "seed": 2,
+      "baseline": 0.4423828125,
+      "candidate": 0.451171875,
+      "difference": 0.0087890625
+    },
+    {
+      "seed": 3,
+      "baseline": 0.4453125,
+      "candidate": 0.453125,
+      "difference": 0.0078125
+    }
+  ],
+  "paired_summary": {
+    "n_pairs": 4,
+    "mean_difference": 0.014892578125,
+    "sample_std": 0.007663579014969761
+  }
+}

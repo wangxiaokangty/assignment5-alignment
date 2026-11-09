@@ -32,12 +32,12 @@ def compute_rollout_rewards(
 def compute_group_normalized_rewards(
     raw_rewards: torch.Tensor,
     group_size: int,
-    baseline: Literal["mean", "none"] = "mean",
+    baseline: Literal["mean", "none", "loo"] = "mean",
     advantage_eps: float = 1e-6,
     advantage_normalizer: Literal["std", "none", "mean"] = "std",
 ) -> tuple[torch.Tensor, dict[str, float]]:
     """Apply a group baseline and optional standard-deviation or mean scaling."""
-    if baseline not in ("mean", "none"):
+    if baseline not in ("mean", "none", "loo"):
         raise ValueError(f"Unknown baseline: {baseline}")
     if advantage_normalizer not in ("std", "none", "mean"):
         raise ValueError(f"Unknown advantage normalizer: {advantage_normalizer}")
@@ -52,7 +52,11 @@ def compute_group_normalized_rewards(
     means = grouped.mean(dim=1, keepdim=True)
     # A singleton group has zero variation (and zero mean-centered advantage).
     stds = grouped.std(dim=1, keepdim=True, correction=1 if group_size > 1 else 0)
-    advantages = grouped - means if baseline == "mean" else grouped
+    advantages = grouped - means if baseline in ("mean", "loo") else grouped
+    if baseline == "loo":
+        if group_size < 2:
+            raise ValueError("Leave-one-out baseline requires group_size >= 2")
+        advantages = advantages * (group_size / (group_size - 1))
     if advantage_normalizer == "std":
         advantages = advantages / (stds + advantage_eps)
     elif advantage_normalizer == "mean":
