@@ -13,7 +13,7 @@ def _read_metrics(path):
     if not path.exists():
         return []
     rows = []
-    lines = path.read_text().splitlines()
+    lines = path.read_text().split("\n")
     for index, line in enumerate(lines):
         if not line.strip():
             continue

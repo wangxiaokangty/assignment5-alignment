@@ -234,7 +234,7 @@ def load_training_results(directory="results/grpo_standard"):
         metrics = path.parent / "metrics.jsonl"
         if metrics.exists():
             rows.extend(dict(seed=config["seed"], **json.loads(line))
-                        for line in metrics.read_text().splitlines() if line.strip())
+                        for line in metrics.read_text().split("\n") if line.strip())
     return rows, runs
 
 
@@ -273,7 +273,7 @@ def load_rollout_examples(directory="results/grpo_standard", seed=0, count=3):
         path = path.with_name("examples.jsonl")
     if not path.exists():
         return []
-    records = [json.loads(line) for line in path.read_text().splitlines()]
+    records = [json.loads(line) for line in path.read_text().split("\n") if line.strip()]
     validation = [r for r in records if r["split"] == "val"]
     if not validation:
         return []
@@ -382,7 +382,7 @@ def read_recovery_jsonl(path):
 
     Earlier malformed records signal corruption and must never be hidden.
     """
-    lines = [line for line in Path(path).read_bytes().splitlines() if line.strip()]
+    lines = [line for line in Path(path).read_bytes().split(b"\n") if line.strip()]
     rows = []
     for index, line in enumerate(lines):
         try:

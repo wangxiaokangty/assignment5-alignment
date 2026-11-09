@@ -1,0 +1,180 @@
+{
+  "problem": "grpo_learning_rate",
+  "complete": true,
+  "summary": [
+    {
+      "group": "1e-5",
+      "n_complete": 4,
+      "expected_seeds": 4,
+      "mean": 0.45263671875,
+      "std": 0.024865615787067332,
+      "variance": 0.0006182988484700521,
+      "min": 0.4228515625,
+      "max": 0.482421875,
+      "mean_initial_to_final_change": 0.4521484375,
+      "n_at_least_25_percent": 4,
+      "mean_zero_update_fraction": 0.058750000000000004,
+      "status_counts": {
+        "complete": 4
+      },
+      "missing": 0
+    },
+    {
+      "group": "3e-5",
+      "n_complete": 4,
+      "expected_seeds": 4,
+      "mean": 0.100830078125,
+      "std": 0.15146350052461566,
+      "variance": 0.022941191991170246,
+      "min": 0.0,
+      "max": 0.3203125,
+      "mean_initial_to_final_change": 0.100341796875,
+      "n_at_least_25_percent": 1,
+      "mean_zero_update_fraction": 0.15,
+      "status_counts": {
+        "complete": 4
+      },
+      "missing": 0
+    },
+    {
+      "group": "3e-6",
+      "n_complete": 4,
+      "expected_seeds": 4,
+      "mean": 0.09375,
+      "std": 0.09908781448211049,
+      "variance": 0.009818394978841145,
+      "min": 0.0224609375,
+      "max": 0.23828125,
+      "mean_initial_to_final_change": 0.09326171875,
+      "n_at_least_25_percent": 0,
+      "mean_zero_update_fraction": 0.44625,
+      "status_counts": {
+        "complete": 4
+      },
+      "missing": 0
+    }
+  ],
+  "commentary": "已确认完成 12/12 个计划种子。最终奖励只纳入有完成标记且达到配置终点的验证记录。 观测均值最高的配置为 ['1e-5']，均值 0.4526。 观测样本标准差最低的配置为 ['1e-5']，标准差 0.0249。 四个种子仍是小样本；范围和标准差是描述统计，不能证明差异显著。 配置 1e-5：最终均值 0.4526，样本标准差 0.0249，达到 25% 的已完成种子为 4/4。 初始到最终的平均变化 +0.4521。 配置 3e-5：最终均值 0.1008，样本标准差 0.1515，达到 25% 的已完成种子为 1/4。 初始到最终的平均变化 +0.1003。 配置 3e-6：最终均值 0.0938，样本标准差 0.0991，达到 25% 的已完成种子为 0/4。 初始到最终的平均变化 +0.0933。 存在全零 advantage 更新：这些批次跳过模型计算，记录的零 entropy 是缺失观测约定，不能解读为确定性策略。 失败不等于数值发散；仅明确发散标记或非有限训练数值记作 diverged。反复用验证集调参也会引入选择偏差。",
+  "runtime": [
+    {
+      "method": "1e-5",
+      "seed": 0,
+      "final_reward": 0.458984375,
+      "total_hours": 1.2127205310900333,
+      "rollout_seconds": 7.03787099000765,
+      "update_seconds": 8.860580299149733,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 173
+    },
+    {
+      "method": "1e-5",
+      "seed": 1,
+      "final_reward": 0.482421875,
+      "total_hours": 1.3035189431714307,
+      "rollout_seconds": 7.250974074176047,
+      "update_seconds": 10.218970669256523,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 200
+    },
+    {
+      "method": "1e-5",
+      "seed": 2,
+      "final_reward": 0.4228515625,
+      "total_hours": 1.278855213096831,
+      "rollout_seconds": 6.992097609946504,
+      "update_seconds": 10.140756941665895,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 194
+    },
+    {
+      "method": "1e-5",
+      "seed": 3,
+      "final_reward": 0.4462890625,
+      "total_hours": 1.1786730070709666,
+      "rollout_seconds": 6.663084916623775,
+      "update_seconds": 8.936801528229843,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 186
+    },
+    {
+      "method": "3e-6",
+      "seed": 0,
+      "final_reward": 0.0224609375,
+      "total_hours": 0.9121594191597412,
+      "rollout_seconds": 7.422576691706199,
+      "update_seconds": 3.131640405312646,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 72
+    },
+    {
+      "method": "3e-6",
+      "seed": 1,
+      "final_reward": 0.037109375,
+      "total_hours": 0.9187248824747641,
+      "rollout_seconds": 7.2354651668109,
+      "update_seconds": 3.750811087791808,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 117
+    },
+    {
+      "method": "3e-6",
+      "seed": 2,
+      "final_reward": 0.0771484375,
+      "total_hours": 0.9304987390574793,
+      "rollout_seconds": 7.297723721084185,
+      "update_seconds": 3.757354626485612,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 112
+    },
+    {
+      "method": "3e-6",
+      "seed": 3,
+      "final_reward": 0.23828125,
+      "total_hours": 1.0472089906638333,
+      "rollout_seconds": 7.387494198600762,
+      "update_seconds": 5.588985203900375,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 142
+    },
+    {
+      "method": "3e-5",
+      "seed": 0,
+      "final_reward": 0.0830078125,
+      "total_hours": 1.1340272083564196,
+      "rollout_seconds": 7.28860513776308,
+      "update_seconds": 7.405675887253601,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 176
+    },
+    {
+      "method": "3e-5",
+      "seed": 1,
+      "final_reward": 0.3203125,
+      "total_hours": 1.2079085808614682,
+      "rollout_seconds": 7.055011933455244,
+      "update_seconds": 9.053304058047942,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 200
+    },
+    {
+      "method": "3e-5",
+      "seed": 2,
+      "final_reward": 0.0,
+      "total_hours": 0.9816541930752444,
+      "rollout_seconds": 6.949820415014401,
+      "update_seconds": 5.264242478020024,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 121
+    },
+    {
+      "method": "3e-5",
+      "seed": 3,
+      "final_reward": 0.0,
+      "total_hours": 1.1858411151619577,
+      "rollout_seconds": 7.404025800151285,
+      "update_seconds": 8.162012334750035,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 183
+    }
+  ]
+}
