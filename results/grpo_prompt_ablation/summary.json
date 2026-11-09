@@ -1,0 +1,180 @@
+{
+  "problem": "grpo_prompt_ablation",
+  "complete": true,
+  "summary": [
+    {
+      "group": "question_only",
+      "n_complete": 4,
+      "expected_seeds": 4,
+      "mean": 0.233642578125,
+      "std": 0.19260554966310556,
+      "variance": 0.03709689776102702,
+      "min": 0.0615234375,
+      "max": 0.41796875,
+      "mean_initial_to_final_change": 0.230712890625,
+      "n_at_least_25_percent": 2,
+      "mean_zero_update_fraction": 0.07250000000000001,
+      "status_counts": {
+        "complete": 4
+      },
+      "missing": 0
+    },
+    {
+      "group": "r1_zero",
+      "n_complete": 4,
+      "expected_seeds": 4,
+      "mean": 0.45263671875,
+      "std": 0.024865615787067332,
+      "variance": 0.0006182988484700521,
+      "min": 0.4228515625,
+      "max": 0.482421875,
+      "mean_initial_to_final_change": 0.4521484375,
+      "n_at_least_25_percent": 4,
+      "mean_zero_update_fraction": 0.058750000000000004,
+      "status_counts": {
+        "complete": 4
+      },
+      "missing": 0
+    },
+    {
+      "group": "r1_zero_three_shot",
+      "n_complete": 4,
+      "expected_seeds": 4,
+      "mean": 0.487060546875,
+      "std": 0.011343128309912713,
+      "variance": 0.00012866655985514325,
+      "min": 0.4755859375,
+      "max": 0.5009765625,
+      "mean_initial_to_final_change": 0.28955078125,
+      "n_at_least_25_percent": 4,
+      "mean_zero_update_fraction": 0,
+      "status_counts": {
+        "complete": 4
+      },
+      "missing": 0
+    }
+  ],
+  "commentary": "已确认完成 12/12 个计划种子。最终奖励只纳入有完成标记且达到配置终点的验证记录。 观测均值最高的配置为 ['r1_zero_three_shot']，均值 0.4871。 观测样本标准差最低的配置为 ['r1_zero_three_shot']，标准差 0.0113。 四个种子仍是小样本；范围和标准差是描述统计，不能证明差异显著。 配置 question_only：最终均值 0.2336，样本标准差 0.1926，达到 25% 的已完成种子为 2/4。 初始到最终的平均变化 +0.2307。 配置 r1_zero：最终均值 0.4526，样本标准差 0.0249，达到 25% 的已完成种子为 4/4。 初始到最终的平均变化 +0.4521。 配置 r1_zero_three_shot：最终均值 0.4871，样本标准差 0.0113，达到 25% 的已完成种子为 4/4。 初始到最终的平均变化 +0.2896。 存在全零 advantage 更新：这些批次跳过模型计算，记录的零 entropy 是缺失观测约定，不能解读为确定性策略。 失败不等于数值发散；仅明确发散标记或非有限训练数值记作 diverged。反复用验证集调参也会引入选择偏差。",
+  "runtime": [
+    {
+      "method": "r1_zero",
+      "seed": 0,
+      "final_reward": 0.458984375,
+      "total_hours": 1.2127205310900333,
+      "rollout_seconds": 7.03787099000765,
+      "update_seconds": 8.860580299149733,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 173
+    },
+    {
+      "method": "r1_zero",
+      "seed": 1,
+      "final_reward": 0.482421875,
+      "total_hours": 1.3035189431714307,
+      "rollout_seconds": 7.250974074176047,
+      "update_seconds": 10.218970669256523,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 200
+    },
+    {
+      "method": "r1_zero",
+      "seed": 2,
+      "final_reward": 0.4228515625,
+      "total_hours": 1.278855213096831,
+      "rollout_seconds": 6.992097609946504,
+      "update_seconds": 10.140756941665895,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 194
+    },
+    {
+      "method": "r1_zero",
+      "seed": 3,
+      "final_reward": 0.4462890625,
+      "total_hours": 1.1786730070709666,
+      "rollout_seconds": 6.663084916623775,
+      "update_seconds": 8.936801528229843,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 186
+    },
+    {
+      "method": "question_only",
+      "seed": 0,
+      "final_reward": 0.41796875,
+      "total_hours": 1.1614091851585544,
+      "rollout_seconds": 7.473607828440144,
+      "update_seconds": 7.44315424450906,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 191
+    },
+    {
+      "method": "question_only",
+      "seed": 1,
+      "final_reward": 0.0732421875,
+      "total_hours": 1.0110365796428071,
+      "rollout_seconds": 7.537532698085998,
+      "update_seconds": 4.9652318136696705,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 186
+    },
+    {
+      "method": "question_only",
+      "seed": 2,
+      "final_reward": 0.0615234375,
+      "total_hours": 0.9914681661105714,
+      "rollout_seconds": 7.514318861402571,
+      "update_seconds": 5.069662108875345,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 190
+    },
+    {
+      "method": "question_only",
+      "seed": 3,
+      "final_reward": 0.3818359375,
+      "total_hours": 1.1079401355232887,
+      "rollout_seconds": 7.3474040067009625,
+      "update_seconds": 6.71688088660594,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 175
+    },
+    {
+      "method": "r1_zero_three_shot",
+      "seed": 0,
+      "final_reward": 0.48046875,
+      "total_hours": 1.3906974888699026,
+      "rollout_seconds": 6.896182249975391,
+      "update_seconds": 12.441946603527759,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 200
+    },
+    {
+      "method": "r1_zero_three_shot",
+      "seed": 1,
+      "final_reward": 0.5009765625,
+      "total_hours": 1.3772596634386314,
+      "rollout_seconds": 6.809903984623961,
+      "update_seconds": 12.411332650070545,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 200
+    },
+    {
+      "method": "r1_zero_three_shot",
+      "seed": 2,
+      "final_reward": 0.4755859375,
+      "total_hours": 1.4096786520430922,
+      "rollout_seconds": 6.911766428679694,
+      "update_seconds": 12.845005240321624,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 200
+    },
+    {
+      "method": "r1_zero_three_shot",
+      "seed": 3,
+      "final_reward": 0.4912109375,
+      "total_hours": 1.3835509983704994,
+      "rollout_seconds": 6.903914710499812,
+      "update_seconds": 12.393098110342398,
+      "optimizer_calls": 200,
+      "active_optimizer_calls": 200
+    }
+  ]
+}
